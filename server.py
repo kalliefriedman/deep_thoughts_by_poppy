@@ -18,12 +18,17 @@ app.jinja_env.undefined = StrictUndefined
 @app.route('/', methods=["GET"])
 def index():
     """Renders homepage if user isn't logged in. Otherwise redirects user to user-articles."""
-    # gets user id from session
-    user_id_value = session.get("user_id")
-    if user_id_value:
-        return redirect("user-articles/" + str(user_id_value))
-    else:
-        return render_template("homepage.html")
+    return render_template("homepage.html")
+
+@app.route('/get-tweets', methods=["POST"])
+def get_tweets():
+    """Reads in the user's timeline of tweets, and returns a new tweet and previously generated tweets (if they exist)"""
+    call to twitter API
+    if user doesn't exist or isn't public:
+     return a flash message and reload homepage
+    if there is a response, read in that data
+    then, generate a tweet, store that new tweet, send over that object to template
+    if user id exists in database, return that list of tweets to template to display
 
 
 chains = {}  # dictionary for all the texts going through

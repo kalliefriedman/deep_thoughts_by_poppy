@@ -21,39 +21,13 @@ class User(db.Model):
     __tablename__ = "users"
 
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    username = db.Column(db.String(50), nullable=False)
-    f_name = db.Column(db.String(50), nullable=False)
-    l_name = db.Column(db.String(50), nullable=False)
-    password = db.Column(db.String(50), nullable=False)
-    password_salt = db.Column(db.String(50), nullable=False)
-    email = db.Column(db.String(50), nullable=False)
-    phone = db.Column(db.String(50), nullable=True)
-
-# four way relationship from users table over to tags table, stepping through taggingss and articles
-    tags = db.relationship("Tag",
-                           primaryjoin='User.user_id == Article.user_id',
-                           secondary='join(Article, Tagging, Article.article_id == Tagging.article_id)',
-                           secondaryjoin='Tagging.tag_id == Tag.tag_id',
-                           viewonly=True,
-                           backref=db.backref("users"))
+    twitter_handle = db.Column(db.String(50), nullable=False)
 
     def __repr__(self):
         """Provide helpful representation when printed."""
 
-        return ("<User user_id=%s username=%s f_name=%s l_name=%s email=%s phone=%s>>" % (self.user_id, self.username, self.f_name,
-                self.l_name, self.email, self.phone))
+        return ("<User user_id=%s twitter_handle=%s" % (self.user_id, self.twitter_handle))
 
-    @classmethod
-    def get_user_object_by_email(cls, input_email):
-        """Takes in an input email and returns first user with that email"""
-        user_by_email = cls.query.filter_by(email=input_email).first()
-        return user_by_email
-
-    @classmethod
-    def get_user_object_by_username(cls, input_username):
-        """takes in username and returns first user with that username"""
-        user_by_username = cls.query.filter_by(username=input_username).first()
-        return user_by_username
 
     @classmethod
     def create_new_user(cls, username, f_name, l_name, password, email,
@@ -69,3 +43,48 @@ class User(db.Model):
         """takes in a userID and returns first user with that userID"""
         user_object = cls.query.filter_by(user_id=user_id).first()
         return user_object
+
+
+##############################################################################
+# Helper functions
+
+
+def connect_to_db(app, db_uri=None):
+    """Connect the database to our Flask app."""
+
+    # Configure to use our PstgreSQL database
+    app.config['SQLALCHEMY_DATABASE_URI'] = db_uri or environ.get("DATABASE_URL", "postgresql:///audioarticles")
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    db.app = app
+    db.init_app(app)
+
+
+def example_data_users():
+    """creating and adding sample users"""
+    kallie = User(username='kfriedman', f_name='Kallie', l_name='Friedman',
+                  password='password', password_salt='salt',
+                  email='kallie@yahoo.com')
+    db.session.add(kallie)
+
+    natalie = User(username='nfriedman', f_name='Natalie', l_name='Friedman',
+                   password='password', password_salt='salt',
+                   email='natalie@hotmail.com')
+    db.session.add(natalie)
+
+    randy = User(username='rfriedman', f_name='Randy', l_name='Friedman',
+                 password='password', password_salt='salt',
+                 email='randy@yahoo.com')
+    db.session.add(randy)
+
+    db.session.commit()
+
+
+if __name__ == "__main__":
+    # As a convenience, if we run this module interactively, it will leave
+    # you in a state of being able to work with the database directly.
+
+    from server import app
+    connect_to_db(app)
+    db.create_all()
+    print "Connected to DB."
+

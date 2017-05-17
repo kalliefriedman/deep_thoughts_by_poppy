@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %} 
+  Homepage 
+{% endblock %}
+
+{% block page_specific_js %} 
+<script src="/static/homepage.js"></script>  
+{% endblock %}
+
+{% block content %}
+
+  <h1>Welcome to Tweet Generator!</h1>
+
+    Give us the Twitter handle of the user you'd like to emulate: 
+      <form action="/get-tweets" method="POST">
+        Give us the Twitter handle of the user you'd like to emulate: 
+        <input type="text" name="twitterhandle">
+        <input type="submit" value="Generate new tweets!">
+      </form>
+
+    Latest Tweet from this user: {most recent tweet}
+    <br>
+    Past Tweets: {past tweets for this handle that we've generated}
+{% endblock %}

@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  <head>
+    <title>
+      {% block title %} 
+        Put your title here 
+      {% endblock %}
+    </title>
+
+<!--     jquery script tag
+ -->    
+    <script src="https://code.jquery.com/jquery-3.2.1.js"
+    integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+    crossorigin="anonymous"></script>
+
+<!--     project stylesheet
+-->    
+ <link rel="stylesheet" type="text/css" href="/static/tweet-generator.css">
+
+    {% block page_specific_js %} 
+      If exists
+    {% endblock %}
+    
+  </head>
+
+  <body>
+   
+    {% block content %} 
+      Put your content here 
+    {% endblock %}
+
+  </body>
+</html>
