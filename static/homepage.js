@@ -2,18 +2,20 @@
 
 $(document).ready(function(){
 
-// prevents default and makes call to get-tweets, constructing URL, on click
+// on form submit, returns a new machine-generated tweet
     $("#submit").click(function(evt){
         evt.preventDefault();
         var handle = $("#handle").val();
         //pack up the form values into an object
         var formData = {"handle": handle};
-
         //make the AJAX request and append response to DOM
         $.post("/generate-new-tweet.json", formData, function(results) {
-
-                                            console.log(results);});
-    
+                                            console.log(results);
+                                        }
+                                        ); // end of post request
+                                        } 
+                                        ); 
+                                        }); //end of document.ready
         
                                                 // var tagId = results.tag_id;
                                                 // var articleId = results.article_id;
@@ -45,6 +47,3 @@ $(document).ready(function(){
                                                 // newForm.append(newForm);
                                                 // $("#tags").append(newForm);
                                                 
-                                                } //end of callback function
-        ); //end of AJAX request
-    } 

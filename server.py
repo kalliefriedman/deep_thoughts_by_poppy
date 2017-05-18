@@ -24,7 +24,9 @@ def index():
 @app.route('/generate-new-tweet.json', methods=["POST"])
 def make_new_tweet():
     """Reads in the user's timeline of tweets, and returns a new tweet"""
+    print "hit route"
     handle = request.form.get("handle")
+    print handle
     api = twitter.Api(
         consumer_key=environ['TWITTER_CONSUMER_KEY'],
         consumer_secret=environ['TWITTER_CONSUMER_SECRET'],
@@ -32,7 +34,7 @@ def make_new_tweet():
         access_token_secret=environ['TWITTER_ACCESS_TOKEN_SECRET'])
     print "connected"
     response = api.GetUserTimeline(user_id=None, screen_name=handle,
-                                   since_id=None, max_id=None, count=None,
+                                   since_id=None, max_id=None, count=50,
                                    include_rts=True, trim_user=False,
                                    exclude_replies=False)
     print response
