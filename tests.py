@@ -13,4 +13,4 @@ class TestLoggedOut(unittest.TestCase):
         app.config['TESTING'] = True
         connect_to_db(app, "postgresql:///testdb")
         db.create_all()
-      
+     

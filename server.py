@@ -1,4 +1,5 @@
 import sys
+import twitter
 from random import choice
 from os import environ
 from jinja2 import StrictUndefined
@@ -19,22 +20,35 @@ def index():
     """Renders homepage if user isn't logged in. Otherwise redirects user to user-articles."""
     return render_template("homepage.html")
 
+
 @app.route('/generate-new-tweet.json', methods=["POST"])
-    def make_new_tweet():
-    """Reads in the user's timeline of tweets, and returns a new tweet and previously generated tweets (if they exist)"""
+def make_new_tweet():
+    """Reads in the user's timeline of tweets, and returns a new tweet"""
+    handle = request.form.get("handle")
     api = twitter.Api(
-        consumer_key=os.environ['TWITTER_CONSUMER_KEY'],
-        consumer_secret=os.environ['TWITTER_CONSUMER_SECRET'],
-        access_token_key=os.environ['TWITTER_ACCESS_TOKEN_KEY'],
-        access_token_secret=os.environ['TWITTER_ACCESS_TOKEN_SECRET'])
+        consumer_key=environ['TWITTER_CONSUMER_KEY'],
+        consumer_secret=environ['TWITTER_CONSUMER_SECRET'],
+        access_token_key=environ['TWITTER_ACCESS_TOKEN_KEY'],
+        access_token_secret=environ['TWITTER_ACCESS_TOKEN_SECRET'])
+    print "connected"
+    response = api.GetUserTimeline(user_id=None, screen_name=handle,
+                                   since_id=None, max_id=None, count=None,
+                                   include_rts=True, trim_user=False,
+                                   exclude_replies=False)
+    print response
+    return jsonify(response)
+
 #     call to twitter API
 #     if user doesn't exist or isn't public:
 #      return a flash message and reload homepage
 #     if there is a response, read in that data
 #     then, generate a tweet, store that new tweet, send over that object to template
 
+
 @app.route('/get-past-tweets.json', methods=["GET"])
-    
+def get_prior_tweets():
+    """Takes in a username and returns their prior tweets (if they exist)"""
+
 #     if user id exists in database, return that list of tweets to template to display
 
 

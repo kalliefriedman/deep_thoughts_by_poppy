@@ -46,14 +46,14 @@ class User(db.Model):
 class PriorTweets(db.Model):
     """Prior generated tweets of particular users"""
 
-    __tablename__ = "users"
+    __tablename__ = "priortweets"
 
     tweet_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     tweet_content = db.Column(db.String(200), nullable=False)
 
     priortweets = db.relationship("PriorTweets",
-                           backref=db.backref("user"))
+                                  backref=db.backref("user"))
 
     def __repr__(self):
         """Provide helpful representation when printed."""
