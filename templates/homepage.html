@@ -10,16 +10,17 @@
 
 {% block content %}
 
-  <h1>Welcome to Tweet Generator!</h1>
 
-    Give us the Twitter handle of the user you'd like to emulate: 
+  <h1>Deep thoughts by Poppy...</h1>
+  <h3>Poppy is a lion bear, a cuddler, and a squirrel chaser. She's also a deep thinker, a dreamer if you will. </h3>
+
+  <img src="/static/poppy.jpg" alt="Poppy" width="279" height="268">
+    <br>
+    <br>
       <form action="/get-tweets" method="POST">
-        Give us the Twitter handle of the user you'd like to emulate: 
+        Give her the Twitter handle of the user you'd like her thoughts on: 
         <input type="text" name="twitterhandle">
-        <input type="submit" value="Generate new tweets!">
+        <input type="submit" value="Generate Poppy's Thoughts">
       </form>
 
-    Latest Tweet from this user: {most recent tweet}
-    <br>
-    Past Tweets: {past tweets for this handle that we've generated}
 {% endblock %}

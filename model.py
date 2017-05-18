@@ -16,7 +16,7 @@ db = SQLAlchemy()
 
 
 class User(db.Model):
-    """User of Audio Articles app."""
+    """Twitter user we are generating tweets for"""
 
     __tablename__ = "users"
 
@@ -29,22 +29,34 @@ class User(db.Model):
         return ("<User user_id=%s twitter_handle=%s" % (self.user_id, self.twitter_handle))
 
 
-    @classmethod
-    def create_new_user(cls, username, f_name, l_name, password, email,
-                        phone, password_salt):
-        """takes in user attributes and adds that user to database"""
-        new_user = cls(username=username, f_name=f_name, l_name=l_name, password=password, email=email,
-                       phone=phone, password_salt=password_salt)
-        db.session.add(new_user)
-        db.session.commit()
+    # @classmethod
+    # def create_new_user(cls, username, f_name, l_name, password, email,
+    #                     phone, password_salt):
+    #     """takes in user attributes and adds that user to database"""
+    #     new_user = cls(username=username, f_name=f_name, l_name=l_name, password=password, email=email,
+    #                    phone=phone, password_salt=password_salt)
+    #     db.session.add(new_user)
+    #     db.session.commit()
 
-    @classmethod
-    def get_user_object_by_user_id(cls, user_id):
-        """takes in a userID and returns first user with that userID"""
-        user_object = cls.query.filter_by(user_id=user_id).first()
-        return user_object
+    # @classmethod
+    # def get_user_object_by_user_id(cls, user_id):
+    #     """takes in a userID and returns first user with that userID"""
+    #     user_object = cls.query.filter_by(user_id=user_id).first()
+    #     return user_object
 
+class PriorTweets(db.Model):
+    """Prior generated tweets of particular users"""
 
+    __tablename__ = "users"
+
+    tweet_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
+    tweet_content = db.Column(db.String(200), nullable=False)
+
+    def __repr__(self):
+        """Provide helpful representation when printed."""
+
+        return ("<tweet_id=%s user_id=%s tweet_content=%s" % (self.tweet_id, self.user_id, self.tweet_content))
 ##############################################################################
 # Helper functions
 
@@ -59,24 +71,24 @@ def connect_to_db(app, db_uri=None):
     db.init_app(app)
 
 
-def example_data_users():
-    """creating and adding sample users"""
-    kallie = User(username='kfriedman', f_name='Kallie', l_name='Friedman',
-                  password='password', password_salt='salt',
-                  email='kallie@yahoo.com')
-    db.session.add(kallie)
+# def example_data_users():
+#     """creating and adding sample users"""
+#     kallie = User(username='kfriedman', f_name='Kallie', l_name='Friedman',
+#                   password='password', password_salt='salt',
+#                   email='kallie@yahoo.com')
+#     db.session.add(kallie)
 
-    natalie = User(username='nfriedman', f_name='Natalie', l_name='Friedman',
-                   password='password', password_salt='salt',
-                   email='natalie@hotmail.com')
-    db.session.add(natalie)
+#     natalie = User(username='nfriedman', f_name='Natalie', l_name='Friedman',
+#                    password='password', password_salt='salt',
+#                    email='natalie@hotmail.com')
+#     db.session.add(natalie)
 
-    randy = User(username='rfriedman', f_name='Randy', l_name='Friedman',
-                 password='password', password_salt='salt',
-                 email='randy@yahoo.com')
-    db.session.add(randy)
+#     randy = User(username='rfriedman', f_name='Randy', l_name='Friedman',
+#                  password='password', password_salt='salt',
+#                  email='randy@yahoo.com')
+#     db.session.add(randy)
 
-    db.session.commit()
+#     db.session.commit()
 
 
 if __name__ == "__main__":
