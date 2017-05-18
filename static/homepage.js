@@ -10,7 +10,7 @@ $(document).ready(function(){
         var formData = {"handle": handle};
 
         //make the AJAX request and append response to DOM
-        $.post("/get-tweets", formData, function(results) {
+        $.post("/generate-new-tweet.json", formData, function(results) {
     
         
                                                 var tagId = results.tag_id;
