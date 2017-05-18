@@ -10,6 +10,16 @@
 
 {% block content %}
 
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
 
   <h1>Deep thoughts by Poppy...</h1>
   <h3>Poppy is a lion bear, a cuddler, and a squirrel chaser. She's also a deep thinker, a dreamer if you will. </h3>

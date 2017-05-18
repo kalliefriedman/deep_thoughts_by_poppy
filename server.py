@@ -38,15 +38,15 @@ def make_new_tweet():
                                    include_rts=True, trim_user=False,
                                    exclude_replies=False)
     markov_input = ""
-    for status in statuses:
-        markov_input += status.text
-    print markov_input
-    return "hi"
+    if statuses:
+        for status in statuses:
+            markov_input += status.text
+        print markov_input
+        return "hi"
+    else:
+        flash("There was a problem with the user you've identified. Please try a different user.")
+        return redirect("/")
 
-#     call to twitter API
-#     if user doesn't exist or isn't public:
-#      return a flash message and reload homepage
-#     if there is a response, read in that data
 #     then, generate a tweet, store that new tweet, send over that object to template
 
 
