@@ -2,10 +2,10 @@ import sys
 from random import choice
 from os import environ
 from jinja2 import StrictUndefined
-from flask import (Flask, Response, render_template, redirect, request,
+from flask import (Flask, Response, render_template, flash, redirect, request,
                    session, jsonify)
 from flask_debugtoolbar import DebugToolbarExtension
-# from model import User, Article, Tag, Tagging, connect_to_db, db
+from model import User, PriorTweets, connect_to_db, db
 app = Flask(__name__)
 # Required to use Flask sessions and the debug toolbar
 app.secret_key = "ABC"
@@ -19,9 +19,14 @@ def index():
     """Renders homepage if user isn't logged in. Otherwise redirects user to user-articles."""
     return render_template("homepage.html")
 
-# @app.route('/get-tweets', methods=["POST"])
-# def get_tweets():
-#     """Reads in the user's timeline of tweets, and returns a new tweet and previously generated tweets (if they exist)"""
+@app.route('/get-tweets', methods=["POST"])
+def get_tweets():
+    """Reads in the user's timeline of tweets, and returns a new tweet and previously generated tweets (if they exist)"""
+   api = twitter.Api(
+        consumer_key=os.environ['TWITTER_CONSUMER_KEY'],
+        consumer_secret=os.environ['TWITTER_CONSUMER_SECRET'],
+        access_token_key=os.environ['TWITTER_ACCESS_TOKEN_KEY'],
+        access_token_secret=os.environ['TWITTER_ACCESS_TOKEN_SECRET'])
 #     call to twitter API
 #     if user doesn't exist or isn't public:
 #      return a flash message and reload homepage

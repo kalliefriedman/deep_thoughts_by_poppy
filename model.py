@@ -1,6 +1,5 @@
 """Models and database functions for Audio Articles project."""
 
-
 from os import environ
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
