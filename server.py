@@ -33,12 +33,15 @@ def make_new_tweet():
         access_token_key=environ['TWITTER_ACCESS_TOKEN_KEY'],
         access_token_secret=environ['TWITTER_ACCESS_TOKEN_SECRET'])
     print "connected"
-    response = api.GetUserTimeline(user_id=None, screen_name=handle,
+    statuses = api.GetUserTimeline(user_id=None, screen_name=handle,
                                    since_id=None, max_id=None, count=50,
                                    include_rts=True, trim_user=False,
                                    exclude_replies=False)
-    print response
-    return jsonify(response)
+    markov_input = ""
+    for status in statuses:
+        markov_input += status.text
+    print markov_input
+    return "hi"
 
 #     call to twitter API
 #     if user doesn't exist or isn't public:
