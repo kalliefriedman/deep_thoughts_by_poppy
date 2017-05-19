@@ -2,12 +2,9 @@
 
 from os import environ
 from flask_sqlalchemy import SQLAlchemy
-from datetime import datetime
 
 # This is the connection to the PostgreSQL database; we're getting this through
-# the Flask-SQLAlchemy helper library. On this, we can find the `session`
-# object, where we do most of our interactions (like committing, etc.)
-
+# the Flask-SQLAlchemy helper library.
 db = SQLAlchemy()
 
 ##############################################################################
@@ -26,20 +23,19 @@ class User(db.Model):
         """Provide helpful representation when printed."""
         return ("<User user_id=%s twitter_handle=%s" % (self.user_id, self.twitter_handle))
 
-
-@classmethod
-def get_user_object(handle, tweet):
-    """takes in twitter handle and tweet and adds user if doesn't exist"""
-    user_object = cls.query.get(handle=twitter_handle).first()
-    if user_object:
-        user_id = user_object.user_id
-    else:
-        new_user = cls(handle=twitter_handle)
-        db.session.add(new_user)
-        db.session.commit()
+    @classmethod
+    def save_tweet(cls, handle, tweet):
+        """takes in twitter handle and tweet and adds user if doesn't exist"""
         user_object = cls.query.get(twitter_handle=handle).first()
-        user_id = user_object.user_id
-    PriorTweets.create_new_tweet(user_id, tweet)
+        if user_object:
+            user_id = user_object.user_id
+        else:
+            new_user = cls(twitter_handle=handle)
+            db.session.add(new_user)
+            db.session.commit()
+            user_object = cls.query.get(twitter_handle=handle).first()
+            user_id = user_object.user_id
+        PriorTweets.create_new_tweet(user_id, tweet)
 
 
 class PriorTweets(db.Model):
@@ -55,18 +51,17 @@ class PriorTweets(db.Model):
                                   backref=db.backref("user"))
 
 
-def __repr__(self):
-    """Provide helpful representation when printed."""
+    def __repr__(self):
+        """Provide helpful representation when printed."""
 
-    return ("<tweet_id=%s user_id=%s tweet_content=%s" % (self.tweet_id, self.user_id, self.tweet_content))
+        return ("<tweet_id=%s user_id=%s tweet_content=%s" % (self.tweet_id, self.user_id, self.tweet_content))
 
-
-@classmethod
-def create_new_tweet(user_id, tweet):
-    """takes in user attributes and adds that user to database"""
-    new_tweet = cls(user_id=user_id, tweet=tweet_content)
-    db.session.add(new_tweet)
-    db.session.commit()
+    @classmethod
+    def create_new_tweet(cls, user_id, tweet):
+        """takes in user attributes and adds that user to database"""
+        new_tweet = cls(user_id=user_id, tweet_content=tweet)
+        db.session.add(new_tweet)
+        db.session.commit()
 
     
 ##############################################################################

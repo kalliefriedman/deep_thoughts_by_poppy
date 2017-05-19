@@ -7,6 +7,7 @@ from flask import (Flask, Response, render_template, flash, redirect, request,
                    session, jsonify)
 from flask_debugtoolbar import DebugToolbarExtension
 from model import User, PriorTweets, connect_to_db, db
+
 app = Flask(__name__)
 # Required to use Flask sessions and the debug toolbar
 app.secret_key = "ABC"
@@ -46,12 +47,11 @@ def make_new_tweet():
 
         # create a dictionary of key value pairs with the markov_input
         markov_pairings = make_chains(markov_input)
-      
         # create a new markov chain using the markov_pairings dictionary
         newtweet = generate_text(markov_pairings)
         print "newtweet: "+newtweet
 
-        PriorTweets.save_tweet(handle, newtweet)
+        User.save_tweet(handle, newtweet)
 
         return jsonify(newtweet)
     else:
