@@ -46,14 +46,14 @@ def make_new_tweet():
 
         # create a dictionary of key value pairs with the markov_input
         markov_pairings = make_chains(markov_input)
-        
+      
         # create a new markov chain using the markov_pairings dictionary
         newtweet = generate_text(markov_pairings)
         print "newtweet: "+newtweet
 
-        # PriorTweets.save_tweet(handle, newtweet)
+        PriorTweets.save_tweet(handle, newtweet)
 
-        return "hi"
+        return jsonify(newtweet)
     else:
         flash("There was a problem with the user you've identified. Please try a different user.")
         return redirect("/")
@@ -97,7 +97,7 @@ def generate_text(chains):
         output_text += (random_value+" ")
         new_key = tuple([new_key[1], random_value])
 
-    return jsonify(output_text)
+    return output_text
 
 
 @app.route('/get-past-tweets.json', methods=["GET"])
@@ -107,15 +107,13 @@ def get_prior_tweets():
 #     if user id exists in database, return that list of tweets to template to display
 
 
-
-
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension
     app.debug = True
     app.jinja_env.auto_reload = app.debug  # make sure templates, etc. are not cached in debug mode
 
-    # connect_to_db(app)
+    connect_to_db(app)
 
     # Use the DebugToolbar
     DebugToolbarExtension(app)
