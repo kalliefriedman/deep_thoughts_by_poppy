@@ -10,7 +10,6 @@ $(document).ready(function(){
         var formData = {"handle": handle};
         //make the AJAX request and append response to DOM
         $.post("/generate-new-tweet.json", formData, function(results) {
-                console.log(results);
                 $("#newtweet").empty();
                 
                 if (results){
@@ -23,12 +22,14 @@ $(document).ready(function(){
                     }
                                         }); // end of post request
 
-        // $.get("//get-past-tweets.json", formData, function(results) {
-        //                                     console.log(results);
-        //                                     $("#newtweet").append(results);
-        //                                 }
-        //                                 ); //end of get request                              
-
+        $.get("/get-past-tweets.json", formData, function(results) {
+                                         console.log(results);
+                                         $("#pasttweets").empty();
+                                        
+                                         for (var tweet in results) {
+                                            $("#newtweet").append(tweet + '<br/><br/>');
+                                            } //end of forloop
+                                        }); //end of get request                              
                                         } 
                                         ); 
                                         }); //end of document.ready

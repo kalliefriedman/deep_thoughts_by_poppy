@@ -41,13 +41,11 @@ def make_new_tweet():
             for status in statuses:
                 markov_input += status.text
                 markov_input += " "
-            print markov_input
 
             # create a dictionary of key value pairs with the markov_input
             markov_pairings = make_chains(markov_input)
             # create a new markov chain using the markov_pairings dictionary
             newtweet = generate_text(markov_pairings)
-            print "newtweet: "+newtweet
 
             User.save_tweet(handle, newtweet)
 
@@ -85,7 +83,6 @@ def generate_text(chains):
     output_text = output_text + new_key[0] + " " + new_key[1] + " "
     # continues to add keys until text is too long or the key isn't in dict
     while len(output_text) < 130:
-        print "in while loop!"
         value = chains.get(new_key, None)
         if value:
             random_value = choice(value)
@@ -97,12 +94,13 @@ def generate_text(chains):
     return output_text
 
 
-# @app.route('/get-past-tweets.json', methods=["GET"])
-# def get_prior_tweets():
-#     """Takes in a username and returns their prior tweets (if they exist)"""
-
-# #     if user id exists in database, return that list of tweets to template to display
-
+@app.route('/get-past-tweets.json', methods=["GET"])
+def get_prior_tweets():
+    """Takes in a username and returns their prior tweets (if they exist)"""
+    handle = request.form.get("handle")
+    prior_tweets = PriorTweets.get_prior_tweets(handle)
+    print prior_tweets
+    return jsonify(prior_tweets)
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
