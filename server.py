@@ -97,8 +97,8 @@ def generate_text(chains):
 @app.route('/get-past-tweets.json', methods=["GET"])
 def get_prior_tweets():
     """Takes in a username and returns their prior tweets (if they exist)"""
-    handle = request.form.get("handle")
-    prior_tweets = PriorTweets.get_prior_tweets(handle)
+    handle = request.args.get("handle")
+    prior_tweets = User.get_prior_tweets(handle)
     print prior_tweets
     return jsonify(prior_tweets)
 

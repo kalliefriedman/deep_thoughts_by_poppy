@@ -15,6 +15,7 @@ $(document).ready(function(){
                 if (results){
                     $("#newtweet").append("Poppy's recent thinking: ");
                     $("#newtweet").append(results);
+                    $("#newtweet").append('<br/><br/>'); 
                 }
 
                 else {
@@ -23,11 +24,12 @@ $(document).ready(function(){
                                         }); // end of post request
 
         $.get("/get-past-tweets.json", formData, function(results) {
-                                         console.log(results);
-                                         $("#pasttweets").empty();
+                     console.log(results);
+                     $("#pasttweets").empty();
+                     $("#pasttweet").append("Poppy's prior deep thinking: ");
                                         
                                          for (var tweet in results) {
-                                            $("#newtweet").append(tweet + '<br/><br/>');
+                                            $("#pasttweets").append(tweet + '<br/><br/>');
                                             } //end of forloop
                                         }); //end of get request                              
                                         } 

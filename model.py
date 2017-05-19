@@ -39,9 +39,26 @@ class User(db.Model):
     def get_user_id(cls, handle):
         """takes in handle, returns user_id if user exists, else returns None"""
         user_object = cls.query.filter_by(twitter_handle=handle).first()
-        if user_object:
+        print "yoyoyo"
+        print user_object
+        print user_object.user_id
+        if user_object.user_id:
             user_id = user_object.user_id
             return user_id
+
+    @classmethod
+    def get_prior_tweets(cls, handle):
+        """takes in a handle. if prior tweets, returns list of tweet content, else returns None."""
+        user_id = cls.get_user_id(handle)
+        print "heyheyhey"
+        print user_id
+        if user_id:
+            prior_tweet_objects = PriorTweets.query.filter_by(user_id=user_id).all()
+            prior_tweet_list = []
+            for tweet in prior_tweet_objects:
+                prior_tweet_list.append(tweet.tweet_content)
+                print prior_tweet_list
+            return prior_tweet_list
         else:
             return None
 
@@ -70,18 +87,6 @@ class PriorTweets(db.Model):
         db.session.add(new_tweet)
         db.session.commit()
 
-    @classmethod
-    def get_prior_tweets(cls, handle):
-        """takes in a handle. if prior tweets, returns list of tweet content, else returns None."""
-        user_id = User.get_user_id(handle)
-        if user_id:
-            prior_tweet_objects = cls.query.filter_by(user_id=user_id).all()
-            prior_tweet_list = []
-            for tweet in prior_tweet_objects:
-                prior_tweet_list.append(tweet.tweet_content)
-            return prior_tweet_list
-        else:
-            return None
 
 ##############################################################################
 # Helper functions
