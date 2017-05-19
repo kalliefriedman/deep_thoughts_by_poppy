@@ -18,47 +18,44 @@ app.jinja_env.undefined = StrictUndefined
 
 @app.route('/', methods=["GET"])
 def index():
-    """Renders homepage if user isn't logged in. Otherwise redirects user to user-articles."""
+    """Renders homepage"""
     return render_template("homepage.html")
 
 
 @app.route('/generate-new-tweet.json', methods=["POST"])
 def make_new_tweet():
     """Reads in the user's timeline of tweets, and returns a new tweet"""
-    print "hit route"
     handle = request.form.get("handle")
-    print handle
-    api = twitter.Api(
-        consumer_key=environ['TWITTER_CONSUMER_KEY'],
-        consumer_secret=environ['TWITTER_CONSUMER_SECRET'],
-        access_token_key=environ['TWITTER_ACCESS_TOKEN_KEY'],
-        access_token_secret=environ['TWITTER_ACCESS_TOKEN_SECRET'])
-    print "connected"
-    statuses = api.GetUserTimeline(user_id=None, screen_name=handle,
-                                   since_id=None, max_id=None, count=200,
-                                   include_rts=True, trim_user=False,
-                                   exclude_replies=False)
-    markov_input = ""
-    if statuses:
-        for status in statuses:
-            markov_input += status.text
-            markov_input += " "
-        print markov_input
+    if handle:
+        api = twitter.Api(
+            consumer_key=environ['TWITTER_CONSUMER_KEY'],
+            consumer_secret=environ['TWITTER_CONSUMER_SECRET'],
+            access_token_key=environ['TWITTER_ACCESS_TOKEN_KEY'],
+            access_token_secret=environ['TWITTER_ACCESS_TOKEN_SECRET'])
+        statuses = api.GetUserTimeline(user_id=None, screen_name=handle,
+                                       since_id=None, max_id=None, count=200,
+                                       include_rts=True, trim_user=False,
+                                       exclude_replies=False)
+        markov_input = ""
+        if statuses:
+            for status in statuses:
+                markov_input += status.text
+                markov_input += " "
+            print markov_input
 
-        # create a dictionary of key value pairs with the markov_input
-        markov_pairings = make_chains(markov_input)
-        # create a new markov chain using the markov_pairings dictionary
-        newtweet = generate_text(markov_pairings)
-        print "newtweet: "+newtweet
+            # create a dictionary of key value pairs with the markov_input
+            markov_pairings = make_chains(markov_input)
+            # create a new markov chain using the markov_pairings dictionary
+            newtweet = generate_text(markov_pairings)
+            print "newtweet: "+newtweet
 
-        User.save_tweet(handle, newtweet)
+            User.save_tweet(handle, newtweet)
 
-        return jsonify(newtweet)
+            return jsonify(newtweet)
+        else:
+            return jsonify(None)
     else:
-        flash("There was a problem with the user you've identified. Please try a different user.")
-        return redirect("/")
-
-#     then, generate a tweet, store that new tweet, send over that object to template
+        return jsonify(None)
 
 
 def make_chains(text_string):
@@ -100,11 +97,11 @@ def generate_text(chains):
     return output_text
 
 
-@app.route('/get-past-tweets.json', methods=["GET"])
-def get_prior_tweets():
-    """Takes in a username and returns their prior tweets (if they exist)"""
+# @app.route('/get-past-tweets.json', methods=["GET"])
+# def get_prior_tweets():
+#     """Takes in a username and returns their prior tweets (if they exist)"""
 
-#     if user id exists in database, return that list of tweets to template to display
+# #     if user id exists in database, return that list of tweets to template to display
 
 
 if __name__ == "__main__":

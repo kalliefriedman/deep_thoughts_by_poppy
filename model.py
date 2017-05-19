@@ -26,7 +26,7 @@ class User(db.Model):
     @classmethod
     def save_tweet(cls, handle, tweet):
         """takes in twitter handle and tweet and adds user if doesn't exist"""
-        user_object = cls.query.get(twitter_handle=handle).first()
+        user_object = cls.query.filter_by(twitter_handle=handle).first()
         if user_object:
             user_id = user_object.user_id
         else:
@@ -47,9 +47,8 @@ class PriorTweets(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'))
     tweet_content = db.Column(db.String(200), nullable=False)
 
-    priortweets = db.relationship("PriorTweets",
-                                  backref=db.backref("user"))
-
+    user = db.relationship("User",
+                           backref=db.backref("priortweets"))
 
     def __repr__(self):
         """Provide helpful representation when printed."""

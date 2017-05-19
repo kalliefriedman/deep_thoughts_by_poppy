@@ -12,15 +12,22 @@ $(document).ready(function(){
         $.post("/generate-new-tweet.json", formData, function(results) {
                 console.log(results);
                 $("#newtweet").empty();
-                $("#newtweet").append("Poppy's recent thinking: ");
-                $("#newtweet").append(results);
+                
+                if (results){
+                    $("#newtweet").append("Poppy's recent thinking: ");
+                    $("#newtweet").append(results);
+                }
+
+                else {
+                    $("#newtweet").append("There was a problem with the user you've identified. Please try again.");
+                    }
                                         }); // end of post request
 
-        $.get("//get-past-tweets.json", formData, function(results) {
-                                            console.log(results);
-                                            $("#newtweet").append(results);
-                                        }
-                                        ); //end of get request                              
+        // $.get("//get-past-tweets.json", formData, function(results) {
+        //                                     console.log(results);
+        //                                     $("#newtweet").append(results);
+        //                                 }
+        //                                 ); //end of get request                              
 
                                         } 
                                         ); 
