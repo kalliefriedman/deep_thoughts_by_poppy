@@ -31,7 +31,7 @@ class User(db.Model):
             new_user = cls(twitter_handle=handle)
             db.session.add(new_user)
             db.session.commit()
-            user_object = cls.query.get(twitter_handle=handle).first()
+            user_object = cls.query.filter_by(twitter_handle=handle).first()
             user_id = user_object.user_id
         PriorTweets.create_new_tweet(user_id, tweet)
 
@@ -47,14 +47,11 @@ class User(db.Model):
     def get_prior_tweets(cls, handle):
         """takes in a handle. if prior tweets, returns list of tweet content, else returns None."""
         user_id = cls.get_user_id(handle)
-        print "heyheyhey"
-        print user_id
         if user_id:
             prior_tweet_objects = PriorTweets.query.filter_by(user_id=user_id).all()
             prior_tweet_list = []
             for tweet in prior_tweet_objects:
                 prior_tweet_list.append(tweet.tweet_content)
-                print prior_tweet_list
             return prior_tweet_list
         else:
             return None

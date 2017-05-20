@@ -43,3 +43,13 @@ class TestDatabase(unittest.TestCase):
         db.session.close()
         db.drop_all()
 
+    def testGetUserId(self):
+        result = User.save_tweet()
+        
+    def testGetPriorTweets(self):
+        result = 
+
+    def testGetNewTweetsRoute(self):
+
+    def getPriorTweetsRoute(self):
+

@@ -22,3 +22,9 @@ form {
 #pasttweets {
   text-align: center;  
 }
+
+.button {
+    background-color: #711731;
+    border: none;
+    color: #DECAB1;
+}

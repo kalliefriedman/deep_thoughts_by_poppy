@@ -41,7 +41,6 @@ def make_new_tweet():
             for status in statuses:
                 markov_input += status.text
                 markov_input += " "
-
             # create a dictionary of key value pairs with the markov_input
             markov_pairings = make_chains(markov_input)
             # create a new markov chain using the markov_pairings dictionary
@@ -57,16 +56,18 @@ def make_new_tweet():
 
 
 def make_chains(text_string):
-    """Takes input text as string; returns _dictionary_ of markov chains."""
+    """Takes input text as string; returns dictionary of markov chains."""
     chains = {}
     words = text_string.split()
-    for index in range(0, len(words)-2):
-        key = tuple([words[index], words[index+1]])
-        chains.setdefault(key, []).append(words[index+2]+" ")
 
-    # looping around the chain to create last two key/value pairs
-    chains.setdefault((words[-2], words[-1]), []).append(words[0]+" ")
-    chains.setdefault((words[-1], words[0]), []).append(words[1]+" ")
+    for index in range(0, len(words)-2):
+        word1, word2, word3 = words[index], words[index + 1], words[index + 2]
+        key, value = tuple([word1, word2]), word3
+        if key in chains:
+            chains[key].append(value)
+        else:
+            chains[key] = [word3]
+
     return chains
 
 
@@ -81,6 +82,7 @@ def generate_text(chains):
 
     # add the first tuple key to the output_text
     output_text = output_text + new_key[0] + " " + new_key[1] + " "
+   
     # continues to add keys until text is too long or the key isn't in dict
     while len(output_text) < 130:
         value = chains.get(new_key, None)

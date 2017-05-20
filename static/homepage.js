@@ -28,15 +28,19 @@ $(document).ready(function(){
         $.get("/get-past-tweets.json", formData, function(results) {
                      $("#pasttweets").empty();
                      if (results){
+                        if (results.length > 1){
                      $("#pasttweets").append("<b>Poppy's prior deep thinking: </b>");
                      $("#pasttweets").append('<br/><br/>'); 
-
-                                        
+                  
                      for (var i = 0; i < results.length-i; i++) {
                         $("#pasttweets").append(results[i] + '<br/><br/>');
                         } //end of forloop
-                    }
-                                        }); //end of get request                              
-                                        } 
-                                        ); 
+
+                    } //end of if statement
+
+                                        } //end of second if statement
+                                        
+                                        }); //end of get request 
+
+                                        });  //end of event listener click function
                                         }); //end of document.ready
