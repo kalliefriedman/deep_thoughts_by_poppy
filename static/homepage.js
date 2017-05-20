@@ -8,14 +8,15 @@ $(document).ready(function(){
         var handle = $("#handle").val();
         //pack up the form values into an object
         var formData = {"handle": handle};
+        
         //make the AJAX request and append response to DOM
         $.post("/generate-new-tweet.json", formData, function(results) {
                 $("#newtweet").empty();
                 
                 if (results){
-                    $("#newtweet").append("Poppy's recent thinking: ");
+                    $("#newtweet").append("<b>Poppy's recent thinking: </b><br/><br/>");
                     $("#newtweet").append(results);
-                    $("#newtweet").append('<br/><br/>'); 
+                    $("#newtweet").append('<br/>'); 
                 }
 
                 else {
@@ -23,14 +24,18 @@ $(document).ready(function(){
                     }
                                         }); // end of post request
 
+        //make the AJAX request and append response to DOM
         $.get("/get-past-tweets.json", formData, function(results) {
-                     console.log(results);
                      $("#pasttweets").empty();
-                     $("#pasttweet").append("Poppy's prior deep thinking: ");
+                     if (results){
+                     $("#pasttweets").append("<b>Poppy's prior deep thinking: </b>");
+                     $("#pasttweets").append('<br/><br/>'); 
+
                                         
-                                         for (var tweet in results) {
-                                            $("#pasttweets").append(tweet + '<br/><br/>');
-                                            } //end of forloop
+                     for (var i = 0; i < results.length-i; i++) {
+                        $("#pasttweets").append(results[i] + '<br/><br/>');
+                        } //end of forloop
+                    }
                                         }); //end of get request                              
                                         } 
                                         ); 

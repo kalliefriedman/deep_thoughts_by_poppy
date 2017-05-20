@@ -1,0 +1,24 @@
+img.center {
+    display: block;
+    margin: 0 auto;
+}
+
+h1 {
+    text-align: center;
+}
+
+h3 {
+    text-align: center;
+}
+
+form {
+    text-align: center;
+}
+
+#newtweet {
+    text-align: center;
+}
+
+#pasttweets {
+  text-align: center;  
+}

@@ -39,10 +39,7 @@ class User(db.Model):
     def get_user_id(cls, handle):
         """takes in handle, returns user_id if user exists, else returns None"""
         user_object = cls.query.filter_by(twitter_handle=handle).first()
-        print "yoyoyo"
-        print user_object
-        print user_object.user_id
-        if user_object.user_id:
+        if user_object:
             user_id = user_object.user_id
             return user_id
 
@@ -91,7 +88,6 @@ class PriorTweets(db.Model):
 ##############################################################################
 # Helper functions
 
-
 def connect_to_db(app, db_uri=None):
     """Connect the database to our Flask app."""
 
@@ -102,24 +98,44 @@ def connect_to_db(app, db_uri=None):
     db.init_app(app)
 
 
-# def example_data_users():
-#     """creating and adding sample users"""
-#     kallie = User(username='kfriedman', f_name='Kallie', l_name='Friedman',
-#                   password='password', password_salt='salt',
-#                   email='kallie@yahoo.com')
-#     db.session.add(kallie)
+def example_data_users():
+    """creates sample users"""
+    realDonaldTrump = User(twitter_handle='realDonaldTrump')
+    db.session.add(realDonaldTrump)
 
-#     natalie = User(username='nfriedman', f_name='Natalie', l_name='Friedman',
-#                    password='password', password_salt='salt',
-#                    email='natalie@hotmail.com')
-#     db.session.add(natalie)
+    KimKardashian = User(twitter_handle='KimKardashian')
+    db.session.add(KimKardashian)
 
-#     randy = User(username='rfriedman', f_name='Randy', l_name='Friedman',
-#                  password='password', password_salt='salt',
-#                  email='randy@yahoo.com')
-#     db.session.add(randy)
+    db.session.commit()
 
-#     db.session.commit()
+
+def example_data_prior_tweets():
+    """creates sample tweets"""
+    tweet1 = User(user_id='1', tweet_content='eat pray love my dog')
+    db.session.add(tweet1)
+
+    tweet2 = User(user_id='1', tweet_content='like to sleep and nap and book and work and live and collar and cookie')
+    db.session.add(tweet2)
+
+    tweet3 = User(user_id='1', tweet_content='food desk lamp chair fence sprayerbottle Friday!!')
+    db.session.add(tweet3)
+
+    tweet4 = User(user_id='1', tweet_content='suitcase going on a trip chair like that decanter')
+    db.session.add(tweet4)
+
+    tweet5 = User(user_id='1', tweet_content='why poppy #heart book purse')
+    db.session.add(tweet5)
+
+    tweet6 = User(user_id='2', tweet_content='salt pepper, orchid, happy happiness')
+    db.session.add(tweet6)
+
+    tweet7 = User(user_id='2', tweet_content='love my life!')
+    db.session.add(tweet7)
+
+    tweet8 = User(user_id='2', tweet_content='heart eat water! gum paper')
+    db.session.add(tweet8)
+
+    db.session.commit()
 
 
 if __name__ == "__main__":

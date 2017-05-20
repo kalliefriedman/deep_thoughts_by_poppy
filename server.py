@@ -3,8 +3,8 @@ import twitter
 from random import choice
 from os import environ
 from jinja2 import StrictUndefined
-from flask import (Flask, Response, render_template, flash, redirect, request,
-                   session, jsonify)
+from flask import (Flask, render_template, request,
+                   jsonify)
 from flask_debugtoolbar import DebugToolbarExtension
 from model import User, PriorTweets, connect_to_db, db
 
@@ -99,7 +99,6 @@ def get_prior_tweets():
     """Takes in a username and returns their prior tweets (if they exist)"""
     handle = request.args.get("handle")
     prior_tweets = User.get_prior_tweets(handle)
-    print prior_tweets
     return jsonify(prior_tweets)
 
 if __name__ == "__main__":
