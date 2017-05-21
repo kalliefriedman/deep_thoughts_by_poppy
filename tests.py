@@ -1,5 +1,4 @@
-from flask import (Flask, Response, render_template, redirect, request
-                   session, jsonify)
+from flask import Flask, Response, render_template, redirect, request, session, jsonify
 import unittest
 from server import app
 from model import db, connect_to_db, example_data_users, example_data_prior_tweets
@@ -19,10 +18,14 @@ class TestHomepage(unittest.TestCase):
         db.session.close()
         db.drop_all()
 
-    def testLogin(self):
+    def testInitalHomepage(self):
         result = self.client.get('/')
         self.assertEqual(result.status_code, 200)
-        self.assertIn("Poppy")
+        self.assertIn("Deep thoughts by Poppy...", result.data)
+
+    def testGenerateNewTweet(self):
+        result = self.client.post('generate-new-tweet.json', data={'handle': "realDonaldTrump"})
+        self.assertEqual(result.status_code, 200)
 
 
 class TestDatabase(unittest.TestCase):
@@ -43,13 +46,15 @@ class TestDatabase(unittest.TestCase):
         db.session.close()
         db.drop_all()
 
-    def testGetUserId(self):
-        result = User.save_tweet()
-        
     def testGetPriorTweets(self):
-        result = 
+        result = self.client.get('/get-past-tweets.json', query_string={'handle': "realDonaldTrump"})
+        self.assertEqual(result.status_code, 200)
+        self.assertIn("eat pray", result.data)
+        self.assertIn("why poppy", result.data)
 
-    def testGetNewTweetsRoute(self):
+    def testGetPriorTweetsNoPrior(self):
+        result = self.client.get('/get-past-tweets.json', query_string={'handle': "BarakObama"})
+        self.assertIn("null", result.data)
 
-    def getPriorTweetsRoute(self):
-
+if __name__ == "__main__":
+    unittest.main()

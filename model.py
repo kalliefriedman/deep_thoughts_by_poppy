@@ -108,28 +108,28 @@ def example_data_users():
 
 def example_data_prior_tweets():
     """creates sample tweets"""
-    tweet1 = User(user_id='1', tweet_content='eat pray love my dog')
+    tweet1 = PriorTweets(user_id='1', tweet_content='eat pray love my dog')
     db.session.add(tweet1)
 
-    tweet2 = User(user_id='1', tweet_content='like to sleep and nap and book and work and live and collar and cookie')
+    tweet2 = PriorTweets(user_id='1', tweet_content='like to sleep and nap and book and work and live and collar and cookie')
     db.session.add(tweet2)
 
-    tweet3 = User(user_id='1', tweet_content='food desk lamp chair fence sprayerbottle Friday!!')
+    tweet3 = PriorTweets(user_id='1', tweet_content='food desk lamp chair fence sprayerbottle Friday!!')
     db.session.add(tweet3)
 
-    tweet4 = User(user_id='1', tweet_content='suitcase going on a trip chair like that decanter')
+    tweet4 = PriorTweets(user_id='1', tweet_content='suitcase going on a trip chair like that decanter')
     db.session.add(tweet4)
 
-    tweet5 = User(user_id='1', tweet_content='why poppy #heart book purse')
+    tweet5 = PriorTweets(user_id='1', tweet_content='why poppy #heart book purse')
     db.session.add(tweet5)
 
-    tweet6 = User(user_id='2', tweet_content='salt pepper, orchid, happy happiness')
+    tweet6 = PriorTweets(user_id='2', tweet_content='salt pepper, orchid, happy happiness')
     db.session.add(tweet6)
 
-    tweet7 = User(user_id='2', tweet_content='love my life!')
+    tweet7 = PriorTweets(user_id='2', tweet_content='love my life!')
     db.session.add(tweet7)
 
-    tweet8 = User(user_id='2', tweet_content='heart eat water! gum paper')
+    tweet8 = PriorTweets(user_id='2', tweet_content='heart eat water! gum paper')
     db.session.add(tweet8)
 
     db.session.commit()
