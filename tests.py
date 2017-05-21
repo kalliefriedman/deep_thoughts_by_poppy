@@ -29,7 +29,7 @@ class TestHomepage(unittest.TestCase):
 
 
 class TestDatabase(unittest.TestCase):
-    """Tests to ensure database is working as expected"""
+    """Tests utilizing postgres database"""
 
     def setUp(self):
         """What needs to be done prior to each test."""
