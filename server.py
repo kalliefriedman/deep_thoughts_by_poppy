@@ -84,15 +84,20 @@ def generate_text(chains):
     output_text = output_text + new_key[0] + " " + new_key[1] + " "
    
     # continues to add keys until text is too long or the key isn't in dict
-    while len(output_text) < 130:
+ 
+    # while len(output_text) < 130:
+    while True:
         value = chains.get(new_key, None)
         if value:
             random_value = choice(value)
         else:
             break
-        output_text += (random_value+" ")
-        new_key = tuple([new_key[1], random_value])
-
+        new_output_text = output_text + random_value+" "
+        if len(new_output_text) < 140:
+            output_text = new_output_text
+            new_key = tuple([new_key[1], random_value])
+        else:
+            break
     return output_text
 
 
